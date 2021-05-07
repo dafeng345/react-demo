@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .list {
+            height: 200px;
+            width: 100px;
+            background: skyblue;
+            overflow: auto;
+        }
+
+        .list>li {
+            height: 40px;
+            width: 100%;
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 准备好一个“容器” -->
+    <div id="root"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+    <script type="text/babel">
+
+        class NewsList extends React.Component {
+            state = { newsArr: [] }
+            componentDidMount() {
+                this.timer = setInterval(() => {
+                    const { newsArr } = this.state;
+                    var item = '新闻' + newsArr.length
+                    if (newsArr.length < 20) {
+                        this.setState({
+                            newsArr: [item, ...newsArr]
+                        })
+                    } else {
+                        clearInterval(this.timer)
+                    }
+                }, 1000)
+            }
+            render() {
+                return (
+                    <ul className='list' ref='list'>
+                        {
+                            this.state.newsArr.map((item, index) => <li key={index}>{item}</li>)
+                        }
+                    </ul>
+                )
+            }
+            getSnapshotBeforeUpdate(){
+                // 未更新之前的高度
+                return this.refs.list.scrollHeight;
+            }
+            componentDidUpdate(prevProps,prevState,snapshot){
+                console.log(snapshot)
+                this.refs.list.scrollTop+=this.refs.list.scrollHeight-snapshot;
+            }
+            componentWillUnmount() {
+                clearInterval(this.timer)
+            }
+        }
+        ReactDOM.render(<NewsList />, document.getElementById('root'))
+    </script>
+</body>
+
+</html>

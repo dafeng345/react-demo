@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>2_react生命周期(旧)</title>
+</head>
+
+<body>
+    <!-- 准备好一个“容器” -->
+    <div id="root"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        class Count extends React.Component {
+            state = { count: 0 }
+            addCount = () => {
+                var { count } = this.state;
+                this.setState({
+                    count: ++count
+                })
+            }
+            death= ()=>{
+                ReactDOM.unmountComponentAtNode(document.getElementById('root'))
+            }
+            // forceUpdate挂载在Count实例对象中，不能和force同名
+            force=()=>{
+                this.forceUpdate()
+            }
+            // 当附加状态完全依赖props，不改变时，使用该属性
+            static getDerivedStateFromProps(props,state){
+                console.log('getDerivedStateFromProps')
+                return props
+            }
+            render() {
+                console.log('render')
+                const { count } = this.state;
+                return (
+                    <div>
+                        <h2>当前数据为：{count}</h2>
+                        <button onClick={this.addCount}>加一</button>
+                        <button onClick={this.death}>清除节点</button>
+                        <button onClick={this.force}>强制更新</button>
+                    </div>
+                )
+            }
+            componentDidMount(){
+                console.log('componentDidMount',this.state)
+            }
+            shouldComponentUpdate(){
+                console.log('shouldComponentUpdate')
+                return true;
+            }
+            // 在更新之前获得快照（更新之前的状态，可以用于ui操作）
+            getSnapshotBeforeUpdate(){
+                console.log('getSnapshotBeforeUpdate')
+                return 'snapshot'
+            }
+            componentDidUpdate(prevProps,prevState,snapshot){
+                console.log('componentDidUpdate',prevProps,prevState,snapshot)
+            }
+        }
+        ReactDOM.render(<Count a={18}/>,document.getElementById('root'));
+    </script>
