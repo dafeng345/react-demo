@@ -5,36 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
-    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
-    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../../js/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../../js/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../../js/babel.min.js"></script>
 </head>
 
 <body>
     <div id="root"></div>
     <!-- 注意：js的类型type="text/babel" -->
     <script type="text/babel">
-        function Blog(props){
-                var sideBar=(
-                    <ul>
-                        {props.posts.map((item)=>{
-                            return <li key={item.id}>{item.title}</li>
-                        })}
-                    </ul>
-                )
-                var content=props.posts.map((item)=>
-                    <div key={item.id}>
-                        <div>{item.title}</div>    
-                        <div>{item.content}</div>
-                    </div>
-                )
-                return (
-                    <div>
-                        {sideBar}
-                        <br/>
-                        {content}
-                    </div>
-                )
+        function Blog(props) {
+            var sideBar = (
+                <ul>
+                    {props.posts.map((item) => {
+                        return <li key={item.id}>{item.title}</li>
+                    })}
+                </ul>
+            )
+            var content = props.posts.map((item) =>
+                <div key={item.id}>
+                    <div>{item.title}</div>
+                    <div>{item.content}</div>
+                </div>
+            )
+            return (
+                <div>
+                    {sideBar}
+                    <br />
+                    {content}
+                </div>
+            )
         }
 
         const posts = [

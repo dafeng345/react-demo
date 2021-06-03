@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
-    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
-    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../../js/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../../js/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../../js/babel.min.js"></script>
 </head>
 
 <body>
@@ -17,30 +20,35 @@
         // function FormatData(props){
         //     return <h2>It is {props.date.toLocaleTimeString()}</h2>
         // }
+
         class FormatData extends React.Component {
             constructor(props) {
                 super(props);
             }
+            // 2-1
             componentWillMount() {
                 console.log('child will mount');
             }
+            // 2-2
             render() {
                 console.log('child render')
                 return (
                     <h2>It is {this.props.date.toLocaleTimeString()}</h2>
                 )
             }
+            // 2-3
             componentDidMount() {
                 console.log('child did mount')
             }
         }
+
         class Clock extends React.Component {
             // 0
             constructor(props) {
                 super(props);
                 this.state = {
                     date: new Date()
-                    ,count:0
+                    , count: 0
                 }
                 console.log(props);
             }
@@ -48,10 +56,10 @@
             componentWillMount() {
                 console.log(this.refs.formatData);
             }
-            // 2 
+            // 2-0 
             render() {
                 console.log(this.refs.formatData);
-                if(this.state.count>1){
+                if (this.state.count > 1) {
                     clearInterval(this.timeId)
                 }
                 return (
@@ -67,13 +75,13 @@
                 console.log(this.refs.formatData);
                 // var count = 0;
                 // if (this.state.count < 1) {
-                    this.timeId = setInterval(() => {
-                        this.tick();
-                        this.setState((preState)=>({
-                            count:++this.state.count
-                        }))
-                    }, 1000);
-                    // count++;
+                this.timeId = setInterval(() => {
+                    this.tick();
+                    this.setState((preState) => ({
+                        count: ++this.state.count
+                    }))
+                }, 1000);
+                // count++;
                 // }
 
             }
@@ -87,6 +95,7 @@
                 clearInterval(this.timeId);
             }
         }
+
         // 0
         ReactDOM.render(
             <Clock />,

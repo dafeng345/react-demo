@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>钱币换算</title>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../../js/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../../js/react-dom.development.js"></script>
+    <!-- Babel 可以将 ES6 代码转为 ES5 代码，这样我们就能在目前不支持 ES6 浏览器上执行 React 代码。Babel 内嵌了对 JSX 的支持。 -->
+    <script type="text/javascript" src="../../js/babel.min.js"></script>
+</head>
+</head>
+
+<!-- 子传父逻辑：
+    父组件传递一个函数给子组件
+    子组件接受父组件传递过来的函数，调用的时候传递子组件state中的值，这样父组件就能得到子组件的数据
+-->
+
+
+<body>
+    <div id="app"></div>
+    <script type="text/babel">
+
+        // 子组件
+        class Input extends React.Component {
+            // 通过 props 接收父组件传递过来的东西
+            constructor(props) {
+                super(props);
+            }
+
+            handleChange = (e) => {
+                // 将子组件的值通过父组件传递过来的方法进行改变
+                this.props.dollarChange(e.target.value);
+            }
+
+            render() {
+                // 特别备注：汇率转换以后，父组件把数据传递给子组件，子组件进行渲染
+                const money = this.props.money;
+                const text = this.props.type == 'd' ? '美元' : '人民币';
+                //   <legend>{text}</legend>  这个用于渲染页面的美元和人名币文字
+                return (
+                    <fieldset style={{ width: '500px' }}>
+                        <legend>{text}</legend>
+                        <input value={money} onChange={this.handleChange} />
+                    </fieldset>
+                );
+            }
+        }
+        // 父组件
+        // 维护的数据是在父组件上面维护
+        // 数据的转换，也是在父组件上面操作
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                // 父组件维护的数据
+                this.state = {
+                    dollar: '', // 美元的值
+                    yuan: '', // 人民币的值
+                };
+            }
+            // 父组件上面还有两个方法：主要负责美元换人民币 人民币换美元
+
+            // 美元换人民币
+            dollarInput = (value) => {
+                if (parseFloat(value) || value == '' || parseFloat(value) == 0) {
+                    this.setState({
+                        dollar: value,
+                        yuan: value == '' ? '' : value * 6.7951
+                    });
+                } else {
+                    alert('输入值必须为数字。');
+                }
+            }
+
+            // 人民币换美元
+            yuanInput = (value) => {
+                if (parseFloat(value) || value == '' || parseFloat(value) == 0) {
+                    this.setState({
+                        dollar: value == '' ? '' : value * 0.1472,
+                        yuan: value,
+                    });
+                } else {
+                    alert('输入值必须为数字。');
+                }
+            }
+
+            // 父组件向子组件传递数据时，上面的子组件传递了 dollarInput 方法，下面的子组件传递了 yuanInput 方法
+            // 子组件在数据发生更改时，会使用从父组件拿到的方法进行换算，然后将最新的数据传递给父组件
+
+            // 在使用子组件的时候，需要传递的参数：父组件上面的数据、父组件上面的方法 type 类型
+            render() {
+                return (
+                    <div>
+                        <Input type={'d'} dollarChange={this.dollarInput} money={this.state.dollar} />
+                        <Input type={'y'} dollarChange={this.yuanInput} money={this.state.yuan} />
+                    </div>);
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById('app'));
+    </script>
+</body>
+<!-- https://blog.csdn.net/weixin_49596018/article/details/114022941 -->
+</html>

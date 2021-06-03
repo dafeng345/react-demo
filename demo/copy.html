@@ -2,84 +2,117 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
-    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
-    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 引入react核心库 -->
+  <script type="text/javascript" src="../../js/react.development.js"></script>
+  <!-- 引入react-dom，用于支持react操作DOM -->
+  <script type="text/javascript" src="../../js/react-dom.development.js"></script>
+  <!-- 引入babel，用于将jsx转为js -->
+  <script type="text/javascript" src="../../js/babel.min.js"></script>
 </head>
 
 <body>
-    <div id="root"></div>
-    <!-- 注意：js的类型type="text/babel" -->
-    <script type="text/babel">
-// 通常，多个组件需要反映相同的变化数据，这时我们建议将共享状态提升到最近的共同父组件中去。让我们看看它是如何运作的。
+  <div id="root"></div>
+  <!-- 注意：js的类型type="text/babel" -->
+  <script type="text/babel">
+    // 通常，多个组件需要反映相同的变化数据，这时我们建议将共享状态提升到最近的共同父组件中去。让我们看看它是如何运作的。
 
-// 在本节中，我们将创建一个用于计算水在给定温度下是否会沸腾的温度计算器。
+    // 在本节中，我们将创建一个用于计算水在给定温度下是否会沸腾的温度计算器。
 
-// 我们将从一个名为 BoilingVerdict 的组件开始，它接受 celsius 温度作为一个 prop，并据此打印出该温度是否足以将水煮沸的结果。
-function BoilingVerdict(props) {
-  if (props.celsius >= 100) {
-    return <p>The water would boil.</p>;
-  }
-  return <p>The water would not boil.</p>;
-}
-// 接下来, 我们创建一个名为 Calculator 的组件。它渲染一个用于输入温度的 <input>，并将其值保存在 this.state.temperature 中。
+    // 我们将从一个名为 BoilingVerdict 的组件开始，它接受 celsius 温度作为一个 prop，并据此打印出该温度是否足以将水煮沸的结果。
+    function BoilingVerdict(props) {
+      if (props.celsius >= 100) {
+        return <p>The water would boil.</p>;
+      }
+      return <p>The water would not boil.</p>;
+    }
+    // 接下来, 我们创建一个名为 Calculator 的组件。它渲染一个用于输入温度的 <input>，并将其值保存在 this.state.temperature 中。
 
-// 另外, 它根据当前输入值渲染 BoilingVerdict 组件。
-class Calculator extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {temperature: ''};
-  }
+    // 另外, 它根据当前输入值渲染 BoilingVerdict 组件。
+    class Calculator extends React.Component {
+      constructor(props) {
+        // debugger
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        // this.state = { temperature: this.props.temperature ? this.props.temperature : '' };
+      }
 
-  handleChange(e) {
-    this.setState({temperature: e.target.value});
-  }
+      handleChange(e) {
+        const { value } = e.target;
+        // this.setState({ temperature: value });
+        if (typeof this.props.changeTemp == 'function') {
+          this.props.changeTemp(value);
+        }
+      }
 
-  render() {
-    const temperature = this.state.temperature;
-    return (
-      <fieldset>
-        <legend>Enter temperature in Celsius:</legend>
-        <input
-          value={temperature}
-          onChange={this.handleChange} />
-        <BoilingVerdict
-          celsius={parseFloat(temperature)} />
-      </fieldset>
-    );
-  }
-}
-// 我们的新需求是，在已有摄氏温度输入框的基础上，我们提供华氏度的输入框，并保持两个输入框的数据同步。
+      render() {
 
-// 我们先从 Calculator 组件中抽离出 TemperatureInput 组件，然后为其添加一个新的 scale prop，它可以是 "c" 或是 "f"：
-            class TemperatureInput extends React.Component {
-            constructor(props) {
-                super(props);
-                this.handleChange = this.handleChange.bind(this);
-                this.state = {temperature: ''};
-            }
+        // debugger  5×（F－32）／9
+        const temperature = this.props.temperature;
+        // const temperature = this.props.temperature === '' ? '' : 5.0 / 9 * (this.props.temperature - 32);
+        return (
+          <fieldset>
+            <legend>Enter temperature in Celsius:</legend>
+            <input
+              value={temperature}
+              onChange={this.handleChange} />
+            <BoilingVerdict
+              celsius={parseFloat(temperature)} />
+          </fieldset>
+        );
+      }
+    }
+    // 我们的新需求是，在已有摄氏温度输入框的基础上，我们提供华氏度的输入框，并保持两个输入框的数据同步。
 
-            handleChange(e) {
-                this.setState({temperature: e.target.value});
-            }
+    // 我们先从 Calculator 组件中抽离出 TemperatureInput 组件，然后为其添加一个新的 scale prop，它可以是 "c" 或是 "f"：
+    class TemperatureInput extends React.Component {
+      constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = { temperature: '' };
+      }
 
-            render() {
-                const temperature = this.state.temperature;
-                const scale = this.props.scale;
-                return (
-                <fieldset>
-                    <legend>Enter temperature in {scaleNames[scale]}:</legend>
-                    <input value={temperature}
-                        onChange={this.handleChange} />
-                </fieldset>
-                );
-            }
-            }
-    </script>
+      handleChange(e) {
+        const { value } = e.target;
+        this.setState({ temperature: value });
+
+      }
+
+      render() {
+        const temperature = this.state.temperature;
+        const scale = this.props.scale;
+        const scaleNames = { c: '华氏度', f: '摄氏温度' }
+        return (
+          <fieldset>
+            <legend>Enter temperature in {scaleNames[scale]}:</legend>
+            <input value={temperature}
+              onChange={this.handleChange} />
+            <Calculator temperature={temperature} changeTemp={this.changeTemp} />
+          </fieldset>
+        );
+      }
+      changeTemp = (value) => {
+        
+        this.setState({
+          // temperature: value=== '' ? '' : 9.0 / 5 * value + 32
+          temperature: value
+        })
+      }
+    }
+
+    ReactDOM.render(
+      // <Calculator />,
+      <TemperatureInput scale='c' />,
+      document.getElementById('root')
+    )
+    // https://segmentfault.com/q/1010000006982786
+    // 父组件中有一个input， 子组件也有一个input，想绑定这两个input，当其中一个input数据修改时， 另一个也修改。
+    // 这时，在子组件中不需要state，父组件中修改state的值。 
+    // 问题：两者计算的值不一致?
+    // 这主要是计算两者数据不一致造成的，如果有多个输入框数据的绑定，应该将多个输入框封装成子组件。
+  </script>
 </body>
 
 </html>
