@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .outer{
+            width: 400px;
+            height: 400px;
+            border: 1px solid red;
+            margin:60px auto;
+        }
+        .inner{
+            width: 100px;
+            height: 100px;
+            border: 1px dotted red;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- <input type="text"> -->
+    <div class="outer">&#34 &#39  &#60 &#62
+        <div class="inner">
+
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script>
+
+        $('.outer').mouseenter(function(){
+            console.log('outer---enter')
+        }).mouseleave(function(){
+            console.log('outer---leave')
+        }).mouseover(function(){
+            console.log('outer---over')
+        }).mouseout(function(){
+            console.log('outer---out')
+        })
+
+        $('.inner').mouseenter(function(){
+            console.log('inner---enter')
+        }).mouseleave(function(){
+            console.log('inner---leave')
+        }).mouseover(function(){
+            console.log('inner---over')
+        }).mouseout(function(){
+            console.log('inner-out')
+        })
+
+    </script>
+</body>
+</html>
