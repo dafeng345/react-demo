@@ -13,8 +13,8 @@
 			
 			//在函数中使用
 			function sum(...numbers){
-				return numbers.reduce((preValue,currentValue)=>{
-					return preValue + currentValue
+				return numbers.reduce((total,currentValue)=>{
+					return total + currentValue
 				})
 			}
 			console.log(sum(1,2,3,4));

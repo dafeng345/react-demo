@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class FlavorForm extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    isGoing: true,
+                    numberOfGuests: 2,
+                    flavor:'grapefruit'
+                }
+                this.handleSubmit = this.handleSubmit.bind(this);
+                this.handleChange = this.handleChange.bind(this);
+            }
+            handleChange(e) {
+                var name = e.target.name;
+                //当multiple=true,e.target.type="select-multiple"; 当multiple=false:  e.target.type="select-one"  
+                var value = e.target.type == 'checkbox' ? e.target.checked : e.target.value;
+                // debugger
+                this.setState({
+                    [name]: value
+                })
+
+            }
+            handleSubmit(e) {
+                console.log(this.state);
+                e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            }
+            render() {
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        <label>参与：
+                            <input type="checkbox" name='isGoing' checked={this.state.isGoing} onChange={this.handleChange}/>
+                        </label>
+                        <label>
+                            客人数量：
+                            <input type="number" name="numberOfGuests" value={this.state.numberOfGuests} onChange={this.handleChange} />
+                        </label>
+                            <select value={this.state.value} onChange={this.handleChange} name='flavor'>
+                                <option value="grapefruit">葡萄柚</option>
+                                <option value="lime">酸橙</option>
+                                <option value="coconut">椰子</option>
+                                <option value="mango">芒果</option>
+                            </select>
+                            <input type="submit" value="提交" />
+                    </form>
+                )
+            }
+        }
+
+        ReactDOM.render(
+                        <FlavorForm />,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+
+</html>

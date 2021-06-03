@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <!-- 注意：js的类型type="text/babel" -->
+    <script type="text/babel">
+        
+        class LoginControll extends React.Component{
+            constructor(props){
+                super(props);
+                this.state={
+                    isLogin:false
+                }
+                this.handleLoginClick=this.handleLoginClick.bind(this);
+                this.handleLogoutCLick=this.handleLogoutCLick.bind(this);
+            }
+            render(){
+                const isLogin=this.state.isLogin;
+                let button;
+                if(isLogin){ //登录时展示注销按钮
+                    button=<LoginOutButton Click={this.handleLogoutCLick}/>
+                }else {
+                    button=<LoginButton Click={this.handleLoginClick}/>
+                }
+                return (
+                    <div>
+                        {/*Greeting对应登录与取消登录时的不同欢迎语*/}
+                        <Greeting isLoggedIn={isLogin}/>
+                        {button}
+                    </div>
+                )
+            }
+            handleLoginClick(){
+                this.setState({
+                    isLogin:true
+                })
+            }
+            handleLogoutCLick(){
+                this.setState({
+                    isLogin:false
+                })
+            }
+        }
+        function Greeting(props){
+            var isLoggedIn=props.isLoggedIn;
+            if(isLoggedIn){
+                return <UserGreeting/>
+            }else{
+                return <GuestGreeting/>
+            }
+        }
+        function UserGreeting(props){
+            return 'welcome back'
+        }
+        function GuestGreeting(props){
+            return 'please login in'
+        }
+        function LoginButton(props){
+            // 与事件冒泡无关，子组件继承父组件的方法。
+            console.log(props)
+            return (
+                <div>
+                    <button onClick={props.Click}> login</button>
+                </div>
+            )
+        }
+        function LoginOutButton(props){
+            console.log(props);
+            //与事件冒泡无关，子组件继承父组件的方法。
+            return (
+                <div>
+                    <button onClick={props.Click}>logout</button>
+                </div>
+            )
+        }
+        ReactDOM.render(
+            <LoginControll/>
+            ,document.getElementById('root')
+        )
+    </script>
+</body>
+
+</html>

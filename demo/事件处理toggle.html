@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <!-- 注意：js的类型type="text/babel" -->
+    <script type="text/babel">
+        class Toggle extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    isToggleOn: false
+                }
+                // 方法绑定当前组件,可以使用 class fields 语法替代 ,当调用该方法时，方法中的this指向当前组件。
+                // this.handleClick = this.handleClick.bind(this);
+            }
+            render() {
+                return (
+                    <div>
+                        <button onClick={this.handleClick}>{this.state.isToggleOn?'on':'off'}</button>
+                    </div>
+                )
+            }
+            handleClick=(e)=>{
+                // 不使用监听函数时，方法内部的this是undefined
+                e.preventDefault();
+                // 如果修改state，setState函数中参数使用函数，来异步回调
+                // this.setState({
+                //     isToggleOn:!state.isToggleOn
+                // })
+                // 注意，在使用箭头函数时，右边加()表示return
+                this.setState((preState)=>({
+                    isToggleOn:!preState.isToggleOn
+                }))
+                // this.setState(function(preState){
+                //     return {
+                //         isToggleOn:!preState.isToggleOn
+                //     }
+                // })
+            }
+        }
+        ReactDOM.render(
+            <Toggle />,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+
+</html>

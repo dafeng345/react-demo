@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <!-- 注意：js的类型type="text/babel" -->
+    <script type="text/babel">
+        // function FormatData(props){
+        //     return <h2>It is {props.date.toLocaleTimeString()}</h2>
+        // }
+        class FormatData extends React.Component {
+            constructor(props) {
+                super(props);
+            }
+            componentWillMount() {
+                console.log('child will mount');
+            }
+            render() {
+                console.log('child render')
+                return (
+                    <h2>It is {this.props.date.toLocaleTimeString()}</h2>
+                )
+            }
+            componentDidMount() {
+                console.log('child did mount')
+            }
+        }
+        class Clock extends React.Component {
+            // 0
+            constructor(props) {
+                super(props);
+                this.state = {
+                    date: new Date()
+                    ,count:0
+                }
+                console.log(props);
+            }
+            // 1 初始化生命周期钩子函数
+            componentWillMount() {
+                console.log(this.refs.formatData);
+            }
+            // 2 
+            render() {
+                console.log(this.refs.formatData);
+                if(this.state.count>1){
+                    clearInterval(this.timeId)
+                }
+                return (
+                    <div>
+                        <h1>hello world</h1>
+                        <FormatData date={this.state.date} ref='formatData' />
+                    </div>
+
+                )
+            }
+            // 3 初始化生命周期钩子函数
+            componentDidMount() {
+                console.log(this.refs.formatData);
+                // var count = 0;
+                // if (this.state.count < 1) {
+                    this.timeId = setInterval(() => {
+                        this.tick();
+                        this.setState((preState)=>({
+                            count:++this.state.count
+                        }))
+                    }, 1000);
+                    // count++;
+                // }
+
+            }
+            //
+            tick() {
+                this.setState({
+                    date: new Date()
+                })
+            }
+            componentWillUnmount() {
+                clearInterval(this.timeId);
+            }
+        }
+        // 0
+        ReactDOM.render(
+            <Clock />,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+
+</html>

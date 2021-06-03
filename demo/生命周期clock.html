@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <!-- 注意：js的类型type="text/babel" -->
+    <script  type="text/babel">
+        function FormatData(props){
+            return <h2>It is {props.date.toLocaleTimeString()}</h2>
+        }
+
+        class Clock extends React.Component{
+            // 1
+            constructor(props){
+                super(props);
+                this.state={
+                    date:new Date()
+                }
+            }
+            // 2
+            render(){
+                return (
+                    <div>
+                        <h1>hello world</h1>
+                        <FormatData date={this.state.date}/>
+                    </div>
+                    
+                )
+            }
+            componentDidMount(){
+                
+                this.timeId=setInterval(()=>{
+                    this.tick();
+                },1000);
+            }
+            tick(){
+                this.setState({
+                    date:new Date()
+                })
+            }
+            componentWillUnmount(){
+                debugger
+                clearInterval(this.timeId);
+            }
+        }
+        // 0
+        ReactDOM.render(
+            <Clock/>,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+
+</html>

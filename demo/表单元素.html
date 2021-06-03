@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- 引入react核心库 -->
+	<script type="text/javascript" src="js/react.development.js"></script>
+	<!-- 引入react-dom，用于支持react操作DOM -->
+	<script type="text/javascript" src="js/react-dom.development.js"></script>
+	<!-- 引入babel，用于将jsx转为js -->
+	<script type="text/javascript" src="js/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <!-- 注意：js的类型type="text/babel" -->
+    <script type="text/babel">
+        class FlavorForm extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    // value: []
+                    value:''
+                }
+                this.handleSubmit = this.handleSubmit.bind(this);
+                this.handleChange = this.handleChange.bind(this);
+            }
+            handleChange(e) {
+                this.setState({
+                    value: e.target.value
+                })
+                // 多选时
+                // var value=this.state.value;
+                // value.push(e.target.value);
+                // debugger
+                // this.setState((state)=>({
+                //     value:value
+                // }))
+            }
+            handleSubmit(e) {
+                console.log(this.state.value);
+                e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            }
+            render() {
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                       {/* <select value={['lime','coconut']} onChange={this.handleChange} multiple={true}>*/}
+                        <select value={this.state.value} onChange={this.handleChange}>
+                            <option value="grapefruit">葡萄柚</option>
+                            <option value="lime">酸橙</option>
+                            <option value="coconut">椰子</option>
+                            <option value="mango">芒果</option>
+                        </select>
+                        <input type="submit" value="提交" />
+                    </form>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <FlavorForm />,
+            document.getElementById('root')
+        )
+    </script>
+</body>
+
+</html>
