@@ -25,7 +25,9 @@
 			myRef2 = React.createRef()
 			//展示左侧输入框的数据
 			showData = ()=>{
-				alert(this.myRef.current.value);
+				var that=this;
+				// debugger
+				alert(that.myRef.current.value);
 			}
 			//展示右侧输入框的数据
 			showData2 = ()=>{

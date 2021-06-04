@@ -18,11 +18,13 @@
 	<script type="text/babel">
 		//创建组件
 		class Demo extends React.Component{
-
+			// 实例属性
 			state = {isHot:false}
 
 			showInfo = ()=>{
-				const {input1} = this
+				const that=this;
+				// debugger
+				const {input1} = that
 				alert(input1.value)
 			}
 

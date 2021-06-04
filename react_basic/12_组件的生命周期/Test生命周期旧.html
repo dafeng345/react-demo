@@ -54,8 +54,8 @@
                     </div>
                 )
             }
-            componentWillReceiveProps(){
-                console.log('componentWillReceiveProps')
+            componentWillReceiveProps(props){
+                console.log('componentWillReceiveProps',props)
             }
             shouldComponentUpdate(){
                 console.log('shouldComponentUpdate')
@@ -86,8 +86,9 @@
             }
         }
         class B extends React.Component{
-            componentWillReceiveProps(){
-                console.log('componentWillReceiveProps')
+            componentWillReceiveProps(props){
+                // debugger
+                console.log('componentWillReceiveProps',props)
             }
             shouldComponentUpdate(){
                 console.log('shouldComponentUpdate')

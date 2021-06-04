@@ -49,6 +49,7 @@
 				const isHot = this.state.isHot
 				//严重注意：状态必须通过setState进行更新,且更新是一种合并，不是替换。
 				this.setState({isHot:!isHot})
+				// this.setState({isHot:!this.state.isHot})
 				console.log(this);
 
 				//严重注意：状态(state)不可直接更改，下面这行就是直接更改！！！

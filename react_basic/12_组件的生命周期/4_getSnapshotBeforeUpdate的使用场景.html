@@ -43,6 +43,7 @@
 			}
 
 			getSnapshotBeforeUpdate(){
+				// 在有滚动条的情况下使用，包括元素的padding，但不包括元素的border和margin
 				return this.refs.list.scrollHeight
 			}
 
