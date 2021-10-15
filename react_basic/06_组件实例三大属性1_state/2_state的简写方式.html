@@ -23,6 +23,9 @@
 
 			render(){
 				const {isHot,wind} = this.state
+				console.log('render',this);
+				// Weather.prototype.changeWeather undefined 在原型上没有该方法
+				// this.changeWeather 将该方法直接添加到实例对象上
 				return <h1 onClick={this.changeWeather}>今天天气很{isHot ? '炎热' : '凉爽'}，{wind}</h1>
 			}
 

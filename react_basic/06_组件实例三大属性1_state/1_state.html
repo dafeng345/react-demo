@@ -25,13 +25,17 @@
 				super(props)
 				//初始化状态
 				this.state = {isHot:false,wind:'微风'}
-				//解决changeWeather中this指向问题
+				// 解决changeWeather中this指向问题
+				// 在实例对象上添加方法
 				this.changeWeather = this.changeWeather.bind(this)
 			}
 
 			//render调用几次？ ———— 1+n次 1是初始化的那次 n是状态更新的次数
 			render(){
-				console.log('render');
+				// console.log('render',this);
+				// console.log(Weather.prototype.changeWeather,'2') //原型上方法
+				// console.log('1',this.changeWeather)  //实例对象上方法
+				// console.log(Weather.prototype.changeWeather==this.changeWeather) //false
 				//读取状态
 				const {isHot,wind} = this.state
 				return <h1 onClick={this.changeWeather}>今天天气很{isHot ? '炎热' : '凉爽'}，{wind}</h1>
@@ -44,7 +48,7 @@
 				//类中的方法默认开启了局部的严格模式，所以changeWeather中的this为undefined
 				
 				console.log('changeWeather');
-				debugger
+				// debugger
 				//获取原来的isHot值
 				const isHot = this.state.isHot
 				//严重注意：状态必须通过setState进行更新,且更新是一种合并，不是替换。
